@@ -12,14 +12,14 @@ temcho.Timer.prototype.getStatus = function() {
 
 temcho.Timer.prototype.setStatus = function(nextStatus) {
 	status = nextStatus;
-}
+};
 
 temcho.Timer.prototype.getTime = function() {
 	return time;
-}
+};
 
 temcho.Timer.prototype.startUp = function() {
-	status = "stop";
+	this.setStatus("stop");
 	time = 25.0;
 	btn_label = "start";
 	
@@ -27,7 +27,7 @@ temcho.Timer.prototype.startUp = function() {
 		idTimer.innerHTML = time;
 	}
 	
-}
+};
 
 temcho.Timer.prototype.clickBtn = function() {
 	if (this.getStatus() === "stop") {
@@ -54,5 +54,5 @@ temcho.Timer.prototype.clickBtn = function() {
 	// debug用ここまで
 	
 	
-}
+};
 

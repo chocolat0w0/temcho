@@ -12,7 +12,7 @@ TestCase("temchoTest", {
 		assertEquals("stop", this.timer.getStatus());
 		assertNumber(time);
 		assertEquals(25.0, time);
-		assertEquals("start", btn_label)
+		assertEquals("start", btn_label);
 	},
 	
 	"test clickBtn shoud change status (stop to work)": function() {
