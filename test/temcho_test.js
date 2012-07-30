@@ -10,8 +10,8 @@ TestCase("temchoTest", {
 		this.timer.startUp();
 		
 		assertEquals("stop", this.timer.getStatus());
-		assertNumber(time);
-		assertEquals(25.0, time);
+		assertNumber(this.timer.getTime());
+		assertEquals(5.0, this.timer.getTime());
 		assertEquals("start", btn_label);
 	},
 	
@@ -20,7 +20,6 @@ TestCase("temchoTest", {
 		this.timer.clickBtn();
 		
 		assertEquals ("work", this.timer.getStatus());
-		assertNumber(time);
 		assertEquals("interrupt", btn_label);
 	}
 });
