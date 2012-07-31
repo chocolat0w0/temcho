@@ -29,14 +29,16 @@ AsyncTestCase("temchoTest", {
 		this.timer.setTime(1.0);
 		this.timer.clickBtn();
 		
+		assertEquals("work", this.timer.getStatus());
+		assertEquals(1.0, this.timer.getTime());
 		queue.call(function(callbacks) {
 			setTimeout(callbacks.add(function() {
-				
-			}), 1000);
+				assertEquals("off", this.timer.getMode());
+				assertEquals("stop", this.timer.getStatus());
+			}), 1100);
 		});
-		
-		assertEquals("off", this.timer.getMode());
-		assertEquals("stop", this.timer.getStatus());
+		//ポップアップで休憩時間を知らせる
+		//ポップアップのstartボタンを押すとoffモードでタイマースタート
 	},
 	
 });
