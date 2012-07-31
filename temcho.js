@@ -4,6 +4,7 @@ temcho.Timer = function() {
 	var status;
 	var time;
 	var btn_label;
+	var mode;
 };
 
 temcho.Timer.prototype.getStatus = function() {
@@ -50,7 +51,9 @@ temcho.Timer.prototype.clickBtn = function() {
 		initialTime = new Date().getTime();
 		this.setStatus("work");
 		this.setBtnLabel("interrupt");
-	
+		
+		// setIntervalの中ではthisがobjectWindowに書き変わるため、一時保存する
+		var self = this;	
 		Timer1 = setInterval(function() {
 			restTime = maxTime - ((new Date().getTime() - initialTime)/1000);
 		
@@ -59,9 +62,13 @@ temcho.Timer.prototype.clickBtn = function() {
 			}
 			if (restTime <= 0) {
 				clearInterval(Timer1);
-				alert("とまったよ！");
-			}		
-		}, 100);
+				self.setMode("off");
+				self.setStatus("stop");
+				//ポップアップで休憩時間を知らせる
+				//ポップアップのstartボタンを押すとoffモードでタイマースタート
+		}		
+	}, 100);
+						
 	}
 	
 	
@@ -71,7 +78,7 @@ temcho.Timer.prototype.clickBtn = function() {
 	
 	// debug用
 	if ((idStatus = document.getElementById('status')) != null) {
-		idStatus.innerHTML = this.getStatus();
+		idStatus.innerHTML = this.getMode() + ":" + this.getStatus();
 	}
 	// debug用ここまで
 	
