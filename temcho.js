@@ -41,7 +41,6 @@ temcho.Timer.prototype.startUp = function() {
 	if (document.getElementById('timer') != null) {
 		putForwardTime('timer', this.getTime());
 	}
-	
 };
 
 temcho.Timer.prototype.clickBtn = function() {
@@ -59,7 +58,8 @@ temcho.Timer.prototype.clickBtn = function() {
 		this.setStatus("work");
 		this.setBtnLabel("interrupt");
 		
-		// thisがobjectWindowに書き変わるため、一時保存する
+		// thisが書き変わるため、一時保存する
+		//var self = this;
 		var self = this;	
 		Timer1 = setInterval(function() {
 			restTime = calcRestTime(maxTime, initialTime);
@@ -72,7 +72,7 @@ temcho.Timer.prototype.clickBtn = function() {
 				self.setStatus("stop");
 				self.setBtnLabel("start");
 				//ポップアップで休憩時間を知らせる
-				//window.open("./timer_stop.html", "", "width=200,height=100");
+				window.air.NativeApplication.nativeApplication.activate(nativeWindow);
 			}		
 		}, 100);
 	}
