@@ -37,8 +37,8 @@ temcho.Timer.prototype.startUp = function() {
 	this.setTime(5.0);
 	this.setBtnLabel("start");
 	
-	if ((idTimer = document.getElementById('timer')) != null) {
-		idTimer.innerHTML = this.getTime();
+	if (document.getElementById('timer') != null) {
+		putForwardTime('timer', this.getTime());
 	}
 	
 };
@@ -52,18 +52,18 @@ temcho.Timer.prototype.clickBtn = function() {
 		this.setStatus("work");
 		this.setBtnLabel("interrupt");
 		
-		// setIntervalの中ではthisがobjectWindowに書き変わるため、一時保存する
-		var self = this;	
+		// thisがobjectWindowに書き変わるため、一時保存する
+		var that = this;	
 		Timer1 = setInterval(function() {
-			restTime = maxTime - ((new Date().getTime() - initialTime)/1000);
+			restTime = calcRestTime(maxTime, initialTime);
 		
-			if ((idTimer = document.getElementById('timer')) != null) {
-				idTimer.innerHTML = restTime.toFixed(1);
+			if (document.getElementById('timer') != null) {
+				putForwardTime('timer', restTime);
 			}
 			if (restTime <= 0) {
 				clearInterval(Timer1);
-				self.setMode("off");
-				self.setStatus("stop");
+				that.setMode("off");
+				that.setStatus("stop");
 				//ポップアップで休憩時間を知らせる
 				//ポップアップのstartボタンを押すとoffモードでタイマースタート
 		}		
@@ -84,4 +84,28 @@ temcho.Timer.prototype.clickBtn = function() {
 	
 	
 };
+
+// 残り時間を計算する
+function calcRestTime(maxTime, initialTime) {
+	var now = new Date();
+	return restTime = (maxTime - ((now.getTime() - initialTime)/1000));
+}
+
+// 時間を表示形式に成形して表示する（分：秒）
+function putForwardTime(id, time) {
+	var seconds = Math.round(time);
+	var minutes = Math.round(seconds / 60);
+	seconds = toPaddingZeroString(seconds % 60);
+	minutes = toPaddingZeroString(minutes % 60);
+	document.getElementById(id).innerHTML = minutes + ":" + seconds;
+}
+
+function toPaddingZeroString(num) {
+	if (num < 10) {
+		return "0" + num;
+	} else {
+		return String(num);
+	}
+}
+
 
