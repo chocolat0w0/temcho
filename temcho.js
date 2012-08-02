@@ -118,12 +118,6 @@ temcho.Timer.prototype.timerCountDown = function(maxTime, initialTime) {
 	}, 100);
 };
 
-// タイマー０時に開かれた別ウィンドウの制御用に作ったけど今のところ使ってない
-temcho.Timer.prototype.clickStopWindowBtn = function() {
-	window.close();
-	this.clickBtn();
-};
-
 var calcRestTime = function(maxTime, initialTime) {
 	var now = new Date();
 	return (maxTime - ((now.getTime() - initialTime)/1000));
