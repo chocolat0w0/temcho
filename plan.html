@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>task plan</title>
+	<script src="AIRAliases.js" type="text/javascript" charset="utf-8"></script>
+	<script src="plan.js" type="text/javascript" charset="utf-8"></script>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+</HEAD>
+<BODY>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>set</th>
+				<th>task</th>
+			</tr>
+		</thead>
+		<tbody>
+		<script>
+				for (i=0; i<10; i++) {
+					document.write('<tr>');
+					document.write('<td><input type="text" id="set' + i + '" class="span1"></td>');
+					document.write('<td><input type="text" id="task' + i + '" class="span5"></td>');
+					document.write('</tr>');
+				}
+		</script>
+		</tbody>
+	</table>
+	<div style="text-align:right">
+	<input id="btn" type="button" value="submit" onclick="">
+	<input id="btn" type="button" value="cancel" onclick="window.nativeWindow.close()">
+	</div>
+</BODY>
+</HTML>
