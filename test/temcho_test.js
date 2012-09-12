@@ -1,7 +1,7 @@
 AsyncTestCase("temchoTest", {
 	setUp: function () {
 		this.timer = new temcho.Timer();
-		var myTimer = tttimer();
+		var myTimer = tttimer;
 	},
 	
 	tearDown: function () {
@@ -11,7 +11,7 @@ AsyncTestCase("temchoTest", {
 		this.timer.startUp();
 		
 		assertEquals("off", this.timer.getMode());
-		assertEquals("stop", myTimer.getStatus())
+		assertEquals("stop", myTimer.getStatus());
 		assertNumber(this.timer.getTime());
 		assertEquals(TIME_ON, this.timer.getTime());
 		assertEquals("start", this.timer.getBtnLabel());

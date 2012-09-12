@@ -3,7 +3,7 @@
 var TIME_ON = 25*60;
 var TIME_OFF = 5*60;
 
-var tttimer = function() {
+var tttimer = (function() {
 	var status = "stop";
 	
 	return {
@@ -14,7 +14,7 @@ var tttimer = function() {
 			return status;
 		}
 	};
-};
+}());
 
 var temcho = {};
 
@@ -61,10 +61,10 @@ temcho.Timer.prototype.changeMode = function() {
 	}
 };
 
-var myTimer = tttimer();
+var myTimer = tttimer;
 temcho.Timer.prototype.startUp = function() {
 	this.setMode("off");
-	myTimer.setStatus("stop");
+	tttimer.setStatus("stop");
 	this.setTime(TIME_ON);
 	this.setBtnLabel("start");
 	
