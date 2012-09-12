@@ -3,22 +3,35 @@
 var TIME_ON = 25*60;
 var TIME_OFF = 5*60;
 
+var tttimer = function() {
+	var status = "stop";
+	
+	return {
+		setStatus: function(next) {
+			status = next;
+		},
+		getStatus: function() {
+			return status;
+		}
+	};
+};
+
 var temcho = {};
 
 // カプセル化っぽいことをしたかったけどJSではすぐできずに中途半端。とりあえずこのまま実装して後で考える。
 temcho.Timer = function() {
-	this.status = "stop";
+//	this.status = "stop";
 	this.time = TIME_ON;
 	this.btn_label = "start";
 	this.mode = "off";
 };
 
-temcho.Timer.prototype.getStatus = function() {
-	return this.status;
-};
-temcho.Timer.prototype.setStatus = function(nextStatus) {
-	this.status = nextStatus;
-};
+//temcho.Timer.prototype.getStatus = function() {
+//	return this.status;
+//};
+//temcho.Timer.prototype.setStatus = function(nextStatus) {
+//	this.status = nextStatus;
+//};
 temcho.Timer.prototype.getTime = function() {
 	return this.time;
 };
@@ -48,9 +61,10 @@ temcho.Timer.prototype.changeMode = function() {
 	}
 };
 
+var myTimer = tttimer();
 temcho.Timer.prototype.startUp = function() {
 	this.setMode("off");
-	this.setStatus("stop");
+	myTimer.setStatus("stop");
 	this.setTime(TIME_ON);
 	this.setBtnLabel("start");
 	
