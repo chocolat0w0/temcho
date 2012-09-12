@@ -1,7 +1,7 @@
 // C言語のdefineっぽいことをしたいんですが…
 // 単位：秒
-var TIME_ON = 10;
-var TIME_OFF = 3;
+var TIME_ON = 25*60;
+var TIME_OFF = 5*60;
 
 var temcho = {};
 
@@ -125,7 +125,7 @@ var calcRestTime = function(maxTime, initialTime) {
 
 var  putForwardTime = function(id, time) {
 	var seconds = Math.round(time);
-	var minutes = Math.round(seconds / 60);
+	var minutes = Math.floor(seconds / 60);
 	seconds = toPaddingZeroString(seconds % 60);
 	minutes = toPaddingZeroString(minutes % 60);
 	document.getElementById(id).innerHTML = minutes + ":" + seconds;
