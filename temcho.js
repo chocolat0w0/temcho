@@ -3,107 +3,106 @@
 var TIME_ON = 25*60;
 var TIME_OFF = 5*60;
 
-var tttimer = (function() {
+var timerStatus = (function() {
 	var status = "stop";
 	
 	return {
-		setStatus: function(next) {
+		set: function(next) {
 			status = next;
 		},
-		getStatus: function() {
+		get: function() {
 			return status;
 		}
 	};
 }());
 
-var temcho = {};
+var timerMax = (function() {
+	var max = TIME_ON;
+	
+	return {
+		set: function(next) {
+			max = next;
+		},
+		get: function() {
+			return max;
+		}
+	};
+}());
 
-// カプセル化っぽいことをしたかったけどJSではすぐできずに中途半端。とりあえずこのまま実装して後で考える。
-temcho.Timer = function() {
-//	this.status = "stop";
-	this.time = TIME_ON;
-	this.btn_label = "start";
-	this.mode = "off";
-};
-
-//temcho.Timer.prototype.getStatus = function() {
-//	return this.status;
-//};
-//temcho.Timer.prototype.setStatus = function(nextStatus) {
-//	this.status = nextStatus;
-//};
-temcho.Timer.prototype.getTime = function() {
-	return this.time;
-};
-temcho.Timer.prototype.setTime = function(nextTime) {
-	this.time = parseInt(nextTime);
-};
-temcho.Timer.prototype.getBtnLabel = function() {
-	return this.btn_label;
-};
-temcho.Timer.prototype.setBtnLabel = function(nextLabel) {
-	this.btn_label = nextLabel;
-	if ((idBtn = document.getElementById('btn')) != null) {
-		idBtn.value = this.btn_label;
+var timerBtnLabel = (function() {
+	var btnLabel;
+	return {
+		set: function(next) {
+			btnLabel = next;
+			if ((idBtn = document.getElementById('btn')) != null) {
+				idBtn.value = next;
+			}
+		},
+		get: function() {
+			return btnLabel;
+		}
 	}
-};
-temcho.Timer.prototype.getMode = function() {
-	return this.mode;
-};
-temcho.Timer.prototype.setMode = function(nextMode) {
-	this.mode = nextMode;
-};
-temcho.Timer.prototype.changeMode = function() {
-	if (this.getMode() === "off") {
-		this.setMode("on");
-	} else {
-		this.setMode("off");
-	}
-};
+}());
 
-var myTimer = tttimer;
-temcho.Timer.prototype.startUp = function() {
-	this.setMode("off");
-	tttimer.setStatus("stop");
-	this.setTime(TIME_ON);
-	this.setBtnLabel("start");
+var timerMode = (function() {
+	var mode;
+	return {
+		set: function(next) {
+			mode = next;
+		},
+		get: function() {
+			return mode;
+		},
+		change: function() {
+			if (mode === "off") {
+				mode = "on";
+			} else {
+				mode = "off";
+			}
+		}
+	}
+}());
+
+var startUp = function() {
+	timerMode.set("off");
+	timerStatus.set("stop");
+	timerMax.set(TIME_ON);
+	timerBtnLabel.set("start");
 	
 	if (document.getElementById('timer') != null) {
-		putForwardTime('timer', this.getTime());
+		putForwardTime('timer', timerMax.get());
 	}
 };
 
-temcho.Timer.prototype.clickBtn = function() {
+var clickBtn = function() {
 	var initialTime;
-	var maxTime = this.getTime();
-	if (this.getStatus() === "stop") {
+	var maxTime = timerMax.get();
+	if (timerStatus.get() === "stop") {
 		initialTime = new Date().getTime();
-		this.changeMode();
-		this.setStatus("work");
-		this.setBtnLabel("interrupt");
-		this.timerCountDown(maxTime, initialTime);
-	} else if (this.getStatus() === "work") {
-		this.setStatus("interrupt");
-		this.setBtnLabel("restart");
+		timerMode.change();
+		timerStatus.set("work");
+		timerBtnLabel.set("interrupt");
+		timerCountDown(maxTime, initialTime);
+	} else if (timerStatus.get() === "work") {
+		timerStatus.set("interrupt");
+		timerBtnLabel.set("restart");
 		clearInterval(Timer1);
-	} else if (this.getStatus() === "interrupt") {
+	} else if (timerStatus.get() === "interrupt") {
 		initialTime = new Date().getTime();
-		this.setStatus("work");
-		this.setBtnLabel("interrupt");
-		this.timerCountDown(maxTime, initialTime);
+		timerStatus.set("work");
+		timerBtnLabel.set("interrupt");
+		timerCountDown(maxTime, initialTime);
 	}
 		
 	
 	// debug用
 	if ((idStatus = document.getElementById('status')) != null) {
-		idStatus.innerHTML = this.getMode() + ":" + this.getStatus();
+		idStatus.innerHTML = timerMode.get() + ":" + timerStatus.get();
 	}
 	// debug用ここまで
 };
 
-temcho.Timer.prototype.timerCountDown = function(maxTime, initialTime) {
-	// thisが書き変わるため、一時保存する
-	var self = this;
+var timerCountDown = function(maxTime, initialTime) {
 	var restTime;
 	Timer1 = setInterval(function() {
 		restTime = calcRestTime(maxTime, initialTime);
@@ -113,15 +112,15 @@ temcho.Timer.prototype.timerCountDown = function(maxTime, initialTime) {
 		}
 		if (restTime <= 0) {
 			clearInterval(Timer1);
-			self.setStatus("stop");
-			self.setBtnLabel("start");
-			if (self.getMode() === "off") {
-				self.setTime(TIME_ON);
+			timerStatus.set("stop");
+			timerBtnLabel.set("start");
+			if (timerMode.get() === "off") {
+				timerMax.set(TIME_ON);
 				if ((document.getElementById('timer')) != null) {
 					document.getElementById('timer').innerHTML = "Start!!";
 				}
 			} else {
-				self.setTime(TIME_OFF);
+				timerMax.set(TIME_OFF);
 				if ((document.getElementById('timer')) != null) {
 					document.getElementById('timer').innerHTML = "Let's break♪";
 				}
